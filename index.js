@@ -1,6 +1,10 @@
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
 
+function reset(){
+    ctx.reset();
+    drawGrid()
+}
 
 function drawPoint(x, y) {
     ctx.beginPath();
@@ -20,7 +24,7 @@ function drawGrid() {
 
     //x-axis
     ctx.beginPath();
-    ctx.setLineDash([4, 2]);
+    ctx.setLineDash([1, 1]);
     //move our pencil point
     ctx.moveTo(250, 0);
     //draw line to 
@@ -38,7 +42,7 @@ let isDrawing = false
 let lastX = 0
 let lastY = 0
 
-canvas.addEventListener("mousedown",(event) => {
+canvas.addEventListener("mousedown", (event) => {
     isDrawing = true
     lastX = event.offsetX;
     lastY = event.offsetY;
@@ -46,7 +50,7 @@ canvas.addEventListener("mousedown",(event) => {
     // console.log("Mouse down at:", lastX, lastY);
 })
 
-canvas.addEventListener("mouseup",(event) => {
+canvas.addEventListener("mouseup", (event) => {
     if (isDrawing) {
         const x = event.offsetX
         const y = event.offsetY
