@@ -1,6 +1,21 @@
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
 
+
+let isLine = true
+
+document.addEventListener("click", (event)=>{
+    const clickedElement = event.target
+    if(clickedElement.id == "line"){
+        isLine = true
+        console.log("Drawing mode changed to : line")
+    }
+    else if(clickedElement.id == "pencil"){
+        isLine = false
+        console.log("Drawing mode changed to : pencil")
+    }
+})
+
 function reset(){
     ctx.reset();
     drawGrid()
@@ -51,7 +66,7 @@ canvas.addEventListener("mousedown", (event) => {
 })
 
 canvas.addEventListener("mouseup", (event) => {
-    if (isDrawing) {
+    if (isDrawing && isLine) {
         const x = event.offsetX
         const y = event.offsetY
         drawLine(lastX, lastY, x, y)
@@ -60,18 +75,18 @@ canvas.addEventListener("mouseup", (event) => {
     // console.log("Mouse up at:", x, y);
 })
 
-// ------    use this if you want pencil drawing   ------------
-// canvas.addEventListener("mousemove",(event) => {
-//     if(isDrawing){
 
-//         const x = event.offsetX
-//         const y = event.offsetY
-//         drawLine(lastX,lastY, x, y)
-//        lastX = x
-//        lastY = y
-//     }
-//     console.log(event);
-// })
+canvas.addEventListener("mousemove",(event) => {
+    if(isDrawing && !isLine){
+
+        const x = event.offsetX
+        const y = event.offsetY
+        drawLine(lastX,lastY, x, y)
+       lastX = x
+       lastY = y
+    }
+    // console.log(event);
+})
 
 function drawLine(x1, y1, x2, y2) {
     ctx.beginPath();
