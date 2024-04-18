@@ -1,6 +1,18 @@
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
 
+drawGrid()
+
+//getting point size
+const strokeSize = document.getElementById("pi_input")
+let value = document.getElementById("value")
+value.textContent = strokeSize.value
+ctx.lineWidth = strokeSize.value;
+strokeSize.addEventListener("input", (event) => {
+    value.textContent = event.target.value
+    ctx.lineWidth = strokeSize.value;
+})
+
 
 let isLine = true
 
@@ -30,7 +42,7 @@ function drawPoint(x, y) {
     ctx.fill();
 }
 
-drawGrid()
+
 function drawGrid() {
     for (let i = 0; i <= 20; i++) {
         drawPoint(25 * i, 250);
