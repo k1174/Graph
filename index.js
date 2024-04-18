@@ -1,78 +1,78 @@
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
 
-points()
-function points(x, y){
+
+function drawPoint(x, y) {
     ctx.beginPath();
     ctx.fillStyle = "green";
     ctx.setLineDash([]);
     // arc(x, y, radius, startAngle, endAngle)
-    ctx.arc(x , y, 1.5, 0, 2 * Math.PI);
+    ctx.arc(x, y, 1.5, 0, 2 * Math.PI);
     ctx.fill();
-    
 }
 
-drawPoints()
-function drawPoints(){
-    for(let i=0; i<=20; i++){
-        points(25*i, 250);
-        points(250, 25*i)
+drawGrid()
+function drawGrid() {
+    for (let i = 0; i <= 20; i++) {
+        drawPoint(25 * i, 250);
+        drawPoint(250, 25 * i)
     }
-}
 
-axis()
-function axis(){
+    //x-axis
     ctx.beginPath();
     ctx.setLineDash([4, 2]);
     //move our pencil point
     ctx.moveTo(250, 0);
     //draw line to 
-    ctx.lineTo(250,500);
+    ctx.lineTo(250, 500);
     ctx.stroke();
-    
+
+    //y-axis
     ctx.moveTo(0, 250)
-    ctx.lineTo(500,250)
+    ctx.lineTo(500, 250)
     ctx.stroke();
 }
 
-addEventListeners()
-function addEventListeners() {
-    canvas.addEventListener("mousedown", onMouseDown)
-    canvas.addEventListener("mouseup", onMouseUp)
-    canvas.addEventListener("mousemove", onMouseMove)
-}
 
+let isDrawing = false
+let lastX = 0
+let lastY = 0
 
-let xClick = 0
-let yClick = 0
-// Define event handler functions
-function onMouseDown(event) {
-    // Your mouse down logic here
-    xClick = event.offsetX;
-    yClick = event.offsetY;
-    // console.log("Mouse down at:", xClick, yClick);
-}
+canvas.addEventListener("mousedown",(event) => {
+    isDrawing = true
+    lastX = event.offsetX;
+    lastY = event.offsetY;
+    drawPoint(lastX, lastY)
+    // console.log("Mouse down at:", lastX, lastY);
+})
 
-function onMouseUp(event) {
-    const x = event.offsetX
-    const y = event.offsetY
-    if(xClick == x && yClick == yClick){
-        points(x,y)
-        return
+canvas.addEventListener("mouseup",(event) => {
+    if (isDrawing) {
+        const x = event.offsetX
+        const y = event.offsetY
+        drawLine(lastX, lastY, x, y)
     }
-    drawLine(xClick,yClick, x, y)
+    isDrawing = false
     // console.log("Mouse up at:", x, y);
-}
+})
 
-function onMouseMove(event) {
-    // Your mouse move logic here
-    // console.log(event);
-}
+// ------    use this if you want pencil drawing   ------------
+// canvas.addEventListener("mousemove",(event) => {
+//     if(isDrawing){
 
-function drawLine(xClick, yClick, x, y){
+//         const x = event.offsetX
+//         const y = event.offsetY
+//         drawLine(lastX,lastY, x, y)
+//        lastX = x
+//        lastY = y
+//     }
+//     console.log(event);
+// })
+
+function drawLine(x1, y1, x2, y2) {
     ctx.beginPath();
     ctx.setLineDash([]);
-    ctx.moveTo(xClick,yClick)
-    ctx.lineTo(x,y)
+    ctx.moveTo(x1, y1)
+    ctx.lineTo(x2, y2)
     ctx.stroke()
 }
